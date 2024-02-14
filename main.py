@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-import datetime, json, os
+import json, os
+
 
 # Function to create a directory if it doesn't exist
 def create_directory(directory):
@@ -10,11 +11,11 @@ def create_directory(directory):
         
         
 def get_box_data(URL):
-    base_url = "https://wallpaperaccess.com"
-    headers = {
+    BASE_URL = "https://wallpaperaccess.com"
+    HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
 
-    response = requests.get(url=URL, headers=headers)
+    response = requests.get(url=URL, headers=HEADERS)
 
     html = response.text
 
@@ -28,22 +29,22 @@ def get_box_data(URL):
     
     for product in products:
         url = product.select_one('img', attrs="data-src").get('data-src')
-        urls.append(base_url +url.replace("../", ""))
-        
+        urls.append(BASE_URL +url.replace("../", ""))
+    
     with open(f"scraped_data/{DIRECTORY_NAME}/{DIRECTORY_NAME}.json", "w", encoding="utf-8") as file:
         json.dump(urls, file, indent=4, ensure_ascii=False)
-    print(f"ALL URLS ARE DOWNLOADED AT \'scraped_data/{DIRECTORY_NAME}/{DIRECTORY_NAME}.json\' PATH! ")
+    print(f"ALL URLS ARE DOWNLOADED AT \'scraped_data/{DIRECTORY_NAME}/{DIRECTORY_NAME}.json\' PATH!")
 
 
 def scrap_images(DIRECTORY_NAME):
-    headers = {
+    HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
 
     with open(f'scraped_data/{DIRECTORY_NAME}/{DIRECTORY_NAME}.json', 'r',encoding="utf-8") as file:
         data = json.load(file)
         for url in data:
             filename = url.split('/')[-1]
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=HEADERS)
             html = response.text
             def save_img(filename):
                 print(filename)
@@ -69,12 +70,3 @@ while True:
         break
     else:
         print("Your choice is incorrect!")
-
-
-
-
-
-
-        
-
-
