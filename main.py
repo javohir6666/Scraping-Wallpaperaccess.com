@@ -1,8 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import datetime, json, os
-from slugify import slugify
-
 
 # Function to create a directory if it doesn't exist
 def create_directory(directory):
